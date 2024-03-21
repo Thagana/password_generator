@@ -37,7 +37,7 @@ dart run flutter_native_splash:create --flavor production
 ```
 
 ```shell
-dart run flutter_native_splash:create --flavor acceptance
+dart run flutter_native_splash:create --flavor staging
 ```
 
 ```shell

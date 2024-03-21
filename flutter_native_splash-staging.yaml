@@ -1,16 +1,16 @@
-# flutter_native_splash-acceptance.yaml
+# flutter_native_splash-staging.yaml
 flutter_native_splash:
-  color: "#ffffff"
-  image: assets/logo-acceptance.png
-  branding: assets/branding-acceptance.png
-  color_dark: "#121212"
+  color: "#000000"
+  image: assets/background.png
+  branding: assets/background.png
+  color_dark: "#000000"
   image_dark: assets/logo-acceptance.png
   branding_dark: assets/branding-acceptance.png
 
   android_12:
-    image: assets/logo-acceptance.png
-    icon_background_color: "#ffffff"
-    image_dark: assets/logo-acceptance.png
-    icon_background_color_dark: "#121212"
+    image: assets/background.png
+    icon_background_color: "#000000"
+    image_dark: assets/background.png
+    icon_background_color_dark: "#000000"
 
   web: false

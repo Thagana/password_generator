@@ -4,8 +4,8 @@ flutter_native_splash:
   image: assets/background.png
   branding: assets/background.png
   color_dark: "#000000"
-  image_dark: assets/logo-production.png
-  branding_dark: assets/branding-production.png
+  image_dark: assets/background.png
+  branding_dark: assets/background.png
 
   android_12:
     image: assets/background.png
