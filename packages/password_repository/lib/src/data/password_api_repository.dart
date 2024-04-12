@@ -1,23 +1,36 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
 import 'package:password_repository/password_repository.dart';
 import 'package:password_repository/src/models/password.dart';
-
-import '../utils/date.dart';
-
 
 ///
 class PasswordApiProvider {
   ///
   Future<List<Password>> getPasswords() async {
     try {
-      final box = await Hive.openBox<String>('passwords');
-      final passwordBox = box.get('passwords');
-      if (passwordBox != null) {
-        final passwords = Password.decode(passwordBox);
-        return passwords;
+      final user = getCurrentUser();
+      if (user != null) {
+        final database = FirebaseDatabase.instance.ref();
+        final snapshot =
+            await database.child('users/${user.uid}/passwords').get();
+
+        if (snapshot.value != null) {
+          final passwords = <Password>[];
+          for (final item in snapshot.value! as List) {
+            final password = Password(
+              password: item['password'] as String,
+              date: item['date'] as String,
+            );
+            passwords.add(password);
+          }
+          return passwords;
+        } else {
+          return [];
+        }
+      } else {
+        return [];
       }
-      return [];
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -27,28 +40,44 @@ class PasswordApiProvider {
   }
 
   ///
-  Future<List<Password>> savePassword(String password) async {
+  User? getCurrentUser() {
     try {
-      final box = await Hive.openBox<String>('passwords');
-      final passwordBox = box.get('passwords');
-      final date = getTodayDate();
-
-      if (passwordBox == null) {
-        final temp = <Password>[];
-
-        temp.add(Password(password: password, date: date));
-
-        final passwords = Password.encode(temp);
-
-        await box.put('passwords', passwords);
-        return temp;
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        return user;
       } else {
-        final temp = <Password>[];
-        final passwords = Password.decode(passwordBox);
-        temp..add(Password(password: password, date: date))
-        ..addAll(passwords);
-        await box.put('passwords', Password.encode(temp));
-        return temp;
+        return null;
+      }
+    } catch (error) {
+      throw Exception('Failed to get user');
+    }
+  }
+
+  ///
+  Future<void> savePassword(
+    String password,
+    String date,
+  ) async {
+    try {
+      final user = getCurrentUser();
+      if (user != null) {
+        final database = FirebaseDatabase.instance;
+        final snapshot =
+            await database.ref().child('users/${user.uid}/passwords').get();
+        final passwords = snapshot.value! as List<Object?>;
+        if (passwords != null) {
+          final savePassword = [
+            ...passwords,
+            Password(password: password, date: date).toMap(),
+          ];
+          await database
+              .ref('users/${user.uid}')
+              .update({'passwords': savePassword});
+        } else {
+          await database.ref('users/${user.uid}').set({
+            'passwords': [Password(password: password, date: date).toMap()],
+          });
+        }
       }
     } catch (e) {
       if (kDebugMode) {

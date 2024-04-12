@@ -11,5 +11,5 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  bootstrap(App.new);
+  await bootstrap(App.new);
 }

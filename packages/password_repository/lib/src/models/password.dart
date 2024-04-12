@@ -42,6 +42,14 @@ class Password {
   }
 
   ///
+  Map<String, dynamic> toMap() {
+    return {
+      'password': password,
+      'date': date
+    };
+  }
+
+  ///
   static String encode(List<Password> passwords) => json.encode(
         passwords.map<Map<String, dynamic>>(Password.toJson).toList(),
       );

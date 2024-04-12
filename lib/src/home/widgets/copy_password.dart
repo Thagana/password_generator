@@ -1,5 +1,7 @@
-import 'package:cyberman/src/home/bloc/password_bloc.dart';
+import 'package:cyberman/src/home/blocs/auth_bloc/auth_bloc.dart';
+import 'package:cyberman/src/home/blocs/password_bloc/password_bloc.dart';
 import 'package:cyberman/src/home/cubit/password_cubit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,8 +36,10 @@ class CopyPassword extends StatelessWidget {
             await Clipboard.setData(ClipboardData(text: password));
             // bloc time
             context.read<PasswordBloc>().add(
-                  RequestSavePassword(password: password),
-                );
+              RequestSavePassword(
+                password: password,
+              ),
+            );
           },
         ),
       ),

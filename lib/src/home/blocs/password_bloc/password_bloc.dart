@@ -1,17 +1,16 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:password_repository/password_repository.dart';
 
 part 'password_event.dart';
-
 part 'password_state.dart';
 
 ///
 class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
   ///
   PasswordBloc({required this.passwordRepository})
-      : super(const PasswordInitial()) {
+      : super(const PasswordState()) {
     on<RequestSavePassword>(_requestSavePassword);
     on<RequestPasswords>(_requestPasswords);
   }
@@ -19,41 +18,49 @@ class PasswordBloc extends Bloc<PasswordEvent, PasswordState> {
   ///
   final PasswordRepository passwordRepository;
 
+  String getTodayDate() {
+    final now = DateTime.now();
+    final formatter = DateFormat('yyyy/MM/dd');
+    final formattedDate = formatter.format(now);
+    return formattedDate;
+  }
+
   ///
   Future<void> _requestSavePassword(
     RequestSavePassword event,
     Emitter<PasswordState> emit,
   ) async {
     try {
-      final passwords = await passwordRepository.savePassword(event.password);
-      emit(SavePasswordSuccessful(passwords: passwords));
+      final date = getTodayDate();
+      await passwordRepository.savePassword(event.password, date);
+      final passwords = await passwordRepository.getPasswords();
+      emit(state.copyWith(success: true, passwords: passwords));
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
       emit(
-        SavePasswordError(
-          message: e.toString(),
+        state.copyWith(
+          success: false,
+          errorMessage: 'Failed to fetch passwords',
         ),
       );
     }
   }
 
   Future<void> _requestPasswords(
-      RequestPasswords event,
-      Emitter<PasswordState> emit
-      ) async {
+    RequestPasswords event,
+    Emitter<PasswordState> emit,
+  ) async {
     try {
       final passwords = await passwordRepository.getPasswords();
-      emit(PasswordLoaded(passwords: passwords));
+      emit(state.copyWith(passwords: passwords, success: true));
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
       emit(
-        SavePasswordError(
-          message: error.toString(),
-        ),
+        state.copyWith(errorMessage: 'Failed to save password', success: false),
       );
     }
   }

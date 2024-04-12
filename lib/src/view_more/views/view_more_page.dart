@@ -1,6 +1,5 @@
-import 'package:cyberman/app/app.dart';
 import 'package:cyberman/constants.dart';
-import 'package:cyberman/src/home/bloc/password_bloc.dart';
+import 'package:cyberman/src/home/blocs/password_bloc/password_bloc.dart';
 import 'package:cyberman/src/home/widgets/password_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,10 +40,10 @@ class ViewMorePage extends StatelessWidget {
               children: [
                 BlocConsumer<PasswordBloc, PasswordState>(
                   listener: (context, state) {
-                    if (state is SavePasswordError) {
+                    if (!state.success) {
                       final snackBar = SnackBar(
                         content: Text(
-                          state.message,
+                          state.errorMessage,
                           style: GoogleFonts.shareTechMono(
                             color: primaryColor,
                           ),
@@ -54,11 +53,10 @@ class ViewMorePage extends StatelessWidget {
                     }
                   },
                   builder: (context, state) {
-                    if (state is PasswordLoaded ||
-                        state is SavePasswordSuccessful) {
+                    if (state.success) {
                       if (state.passwords.isEmpty) {
                         return Center(
-                          child: Container(
+                          child: ColoredBox(
                             color: Colors.black,
                             child: Text(
                               'Empty list',

@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show TargetPlatform, defaultTargetPlatform, kIsWeb;
+    show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -44,38 +44,42 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCWk0kj0JryGLcJOsGNHKS8376-gTSgV4I',
-    appId: '1:808336413203:web:cd4d808cbc66ef8f55e5e6',
-    messagingSenderId: '808336413203',
-    projectId: 'password-generator-cb253',
-    authDomain: 'password-generator-cb253.firebaseapp.com',
-    storageBucket: 'password-generator-cb253.appspot.com',
-    measurementId: 'G-V28H9JGFWB',
+    apiKey: 'AIzaSyA10feCEOloxqqSwN2O8ZT2XiIw8QoycJ8',
+    appId: '1:636775170550:web:85243f03cadd04344907d7',
+    messagingSenderId: '636775170550',
+    projectId: 'cyberman-9722e',
+    authDomain: 'cyberman-9722e.firebaseapp.com',
+    storageBucket: 'cyberman-9722e.appspot.com',
+    measurementId: 'G-QL94PFTV0L',
+    databaseURL: 'https://cyberman-9722e-default-rtdb.firebaseio.com'
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBbzfkSPgyXgVALR7V106vxyfqM01FHeh0',
-    appId: '1:808336413203:android:b8519377689b916255e5e6',
-    messagingSenderId: '808336413203',
-    projectId: 'password-generator-cb253',
-    storageBucket: 'password-generator-cb253.appspot.com',
+    apiKey: 'AIzaSyCIhx6yOQw9iukERAdSMQAn319lKITEk-s',
+    appId: '1:636775170550:android:d70c2daeac48178a4907d7',
+    messagingSenderId: '636775170550',
+    projectId: 'cyberman-9722e',
+    storageBucket: 'cyberman-9722e.appspot.com',
+    databaseURL: 'https://cyberman-9722e-default-rtdb.firebaseio.com'
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCLqrK-9gU1twBHgjDqSPBeIBcEcsyILf4',
-    appId: '1:808336413203:ios:48b115a67f84a54e55e5e6',
-    messagingSenderId: '808336413203',
-    projectId: 'password-generator-cb253',
-    storageBucket: 'password-generator-cb253.appspot.com',
+    apiKey: 'AIzaSyBvktQuCL5YxqwU1UkdGrabNcnG_VQxELk',
+    appId: '1:636775170550:ios:311e5254ea9cd94a4907d7',
+    messagingSenderId: '636775170550',
+    projectId: 'cyberman-9722e',
+    storageBucket: 'cyberman-9722e.appspot.com',
     iosBundleId: 'com.example.verygoodcore.cyberman',
+    databaseURL: 'https://cyberman-9722e-default-rtdb.firebaseio.com'
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCLqrK-9gU1twBHgjDqSPBeIBcEcsyILf4',
-    appId: '1:808336413203:ios:678dff6008fb86ca55e5e6',
-    messagingSenderId: '808336413203',
-    projectId: 'password-generator-cb253',
-    storageBucket: 'password-generator-cb253.appspot.com',
+    apiKey: 'AIzaSyBvktQuCL5YxqwU1UkdGrabNcnG_VQxELk',
+    appId: '1:636775170550:ios:e6ca0c5a2345bd894907d7',
+    messagingSenderId: '636775170550',
+    projectId: 'cyberman-9722e',
+    storageBucket: 'cyberman-9722e.appspot.com',
     iosBundleId: 'com.example.myApp.RunnerTests',
+    databaseURL: 'https://cyberman-9722e-default-rtdb.firebaseio.com'
   );
 }
