@@ -9,9 +9,9 @@ class WebHome extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Cyberman Password Generator'),
       ),
-      body: Container(
+      body: const ColoredBox(
         color: Colors.black,
-        child: const Column(
+        child: Column(
           children: [
             Padding(
               padding: EdgeInsets.all(8),

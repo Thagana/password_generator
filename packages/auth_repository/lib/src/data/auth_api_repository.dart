@@ -65,7 +65,7 @@ class AuthApiRepository {
       controller.add(user == null);
     });
 
-    controller.close(); // Close the stream when done
+    controller.close();
     return controller;
   }
 

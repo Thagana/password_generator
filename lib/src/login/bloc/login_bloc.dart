@@ -24,18 +24,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final email = event.email;
       final password = event.password;
+      emit(
+        state.copyWith(loading: true),
+      );
       final response =
           await authRepository.signInWithEmailAndPassword(email, password);
       if (response.success) {
-        emit(state.copyWith(success: true,  credentials: response.credentials));
+        emit(
+          state.copyWith(
+            success: true,
+            credentials: response.credentials,
+            loading: false,
+          ),
+        );
       } else {
-        emit(state.copyWith(success: false, errorMessage: response.message));
+        emit(
+          state.copyWith(
+            success: false,
+            errorMessage: response.message,
+            loading: false,
+          ),
+        );
       }
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
-      emit(state.copyWith(errorMessage: 'Something went wrong'));
+      emit(
+        state.copyWith(errorMessage: 'Something went wrong', loading: false),
+      );
     }
   }
 }

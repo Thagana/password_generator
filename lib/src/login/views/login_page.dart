@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          'Authentication',
+          'Auth - Login',
           style: GoogleFonts.shareTechMono(color: primaryColor),
         ),
       ),

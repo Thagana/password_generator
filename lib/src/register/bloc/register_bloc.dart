@@ -17,25 +17,33 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AuthRepository authRepository;
 
   Future<void> _createUserWithEmailAndPassword(
-      SignUpRequest event,
-      Emitter<RegisterState> emit,
-      ) async {
+    SignUpRequest event,
+    Emitter<RegisterState> emit,
+  ) async {
     try {
-      final email = event.email;
-      final password = event.password;
-      final response =
-      await authRepository.createUserWithEmailAndPassword(email, password);
+      emit(state.copyWith(loading: true));
+      final response = await authRepository.createUserWithEmailAndPassword(
+        event.email,
+        event.password,
+      );
       if (response.status) {
-        emit(state.copyWith(success: true));
+        emit(state.copyWith(success: true, loading: false));
       } else {
-        emit(state.copyWith(errorMessage: response.message, success: false));
+        emit(
+          state.copyWith(
+            errorMessage: response.message,
+            success: false,
+            loading: false,
+          ),
+        );
       }
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
-      emit(state.copyWith(errorMessage: 'Something went wrong'));
+      emit(
+        state.copyWith(errorMessage: 'Something went wrong', loading: false),
+      );
     }
   }
-
 }

@@ -13,9 +13,16 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.keyboard_backspace_outlined),
+          color: primaryColor,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: Colors.black,
         title: Text(
-          'Authentication',
+          'Register',
           style: GoogleFonts.shareTechMono(color: primaryColor),
         ),
       ),

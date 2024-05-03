@@ -13,7 +13,7 @@ class PasswordApiProvider {
       if (user != null) {
         final database = FirebaseDatabase.instance.ref();
         final snapshot =
-            await database.child('users/${user.uid}/passwords').get();
+        await database.child('users/${user.uid}/passwords').get();
 
         if (snapshot.value != null) {
           final passwords = <Password>[];
@@ -54,35 +54,47 @@ class PasswordApiProvider {
   }
 
   ///
-  Future<void> savePassword(
-    String password,
-    String date,
-  ) async {
+  Future<void> savePassword(String password,
+      String date,) async {
     try {
       final user = getCurrentUser();
       if (user != null) {
         final database = FirebaseDatabase.instance;
-        final snapshot =
-            await database.ref().child('users/${user.uid}/passwords').get();
-        final passwords = snapshot.value! as List<Object?>;
-        if (passwords != null) {
-          final savePassword = [
-            ...passwords,
-            Password(password: password, date: date).toMap(),
-          ];
+        final snapshot = await database
+            .ref()
+            .child('users/${user.uid}/passwords')
+            .get();
+
+        final passwordSave = {
+          'password': password,
+          'date': date,
+        };
+
+        if (snapshot.value != null) {
+          final passwords = <Map<String, dynamic>>[];
+          for (final item in snapshot.value! as List) {
+            final password = {
+              'password': item['password'] as String,
+              'date': item['date'] as String,
+            };
+            passwords.add(password);
+          }
+          passwords.add(passwordSave);
           await database
               .ref('users/${user.uid}')
-              .update({'passwords': savePassword});
+              .update({'passwords': passwords});
         } else {
           await database.ref('users/${user.uid}').set({
-            'passwords': [Password(password: password, date: date).toMap()],
+            'passwords': [passwordSave],
           });
         }
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
       if (kDebugMode) {
         print(e);
       }
+      print('Error: $e Stacktrace: $stacktrace');
+
       throw Exception('Failed to add password locally');
     }
   }

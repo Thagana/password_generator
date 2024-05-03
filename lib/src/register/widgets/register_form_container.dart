@@ -15,7 +15,6 @@ class RegisterFormContainer extends StatelessWidget {
     final passwordController = TextEditingController();
     return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
-        context.read<LoginFormCubit>().updateLoading();
         if (!state.success) {
           final snackBar = SnackBar(content: Text(state.errorMessage));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -47,7 +46,6 @@ class RegisterFormContainer extends StatelessWidget {
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: primaryColor,
-                            width: 1,
                           ),
                         ),
                         errorText: snapshot.hasError
@@ -84,7 +82,6 @@ class RegisterFormContainer extends StatelessWidget {
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: primaryColor,
-                            width: 1,
                           ),
                         ),
                         errorBorder: const OutlineInputBorder(
@@ -137,63 +134,35 @@ class RegisterFormContainer extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                       ),
-                      label: StreamBuilder<bool>(
-                        stream: context.read<LoginFormCubit>().loadingStream,
-                        builder: (context, snapshot) {
-                          var loading = false;
-                          if (snapshot.hasData && snapshot.data != null) {
-                            loading = snapshot.data!;
-                          }
-                          if (!loading) {
-                            return Text(
-                              'Register',
-                              style: GoogleFonts.shareTechMono(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            );
-                          }
-                          return Container(
-                            width: 24,
-                            height: 24,
-                            padding: const EdgeInsets.all(2),
-                            child: const CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 3,
-                            ),
-                          );
-                        },
+                      label: Visibility(
+                        visible: !context.read<RegisterBloc>().state.loading,
+                        child: Text(
+                          'Register',
+                          style: GoogleFonts.shareTechMono(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
-                      icon: StreamBuilder<bool>(
-                        stream: context.read<LoginFormCubit>().loadingStream,
-                        builder: (context, snapshot) {
-                          var isLoading = false;
-                          if (snapshot.hasData && snapshot.data != null) {
-                            isLoading = snapshot.data!;
-                          }
-                          if (isLoading) {
-                            Container(
-                              width: 24,
-                              height: 24,
-                              padding: const EdgeInsets.all(2),
-                              child: const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 3,
-                              ),
-                            );
-                          }
-                          return Container();
-                        },
+                      icon: Visibility(
+                        visible: context.read<RegisterBloc>().state.loading,
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          padding: const EdgeInsets.all(2),
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3,
+                          ),
+                        ),
                       ),
-                      onPressed: snapshot.hasData && snapshot.data != null
-                          ? () {
-                        register(context);
-                      }
-                          : null,
+                      onPressed: () {
+                        register(context, snapshot);
+                      },
                     ),
                   );
                 },
-              )
+              ),
             ],
           ),
         );
@@ -201,12 +170,19 @@ class RegisterFormContainer extends StatelessWidget {
     );
   }
 
-  void register(BuildContext context) {
-    final email = context.read<LoginFormCubit>().emailValue;
-    final password = context.read<LoginFormCubit>().passwordValue;
+  void register(BuildContext context, AsyncSnapshot<bool> snapshot) {
+    if (!snapshot.hasData) {
+      const snackBar =
+          SnackBar(content: Text('Please profile Email and Password'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    if (snapshot?.data != null && snapshot?.data == false) {
+      const snackBar = SnackBar(content: Text('Form not valid'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    final form = context.read<LoginFormCubit>();
     context.read<RegisterBloc>().add(
-      SignUpRequest(email: email, password: password),
-    );
-    context.read<LoginFormCubit>().updateLoading();
+          SignUpRequest(email: form.emailValue, password: form.passwordValue),
+        );
   }
 }

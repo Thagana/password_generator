@@ -15,15 +15,12 @@ class LoginFormContainer extends StatelessWidget {
     final passwordController = TextEditingController();
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-
-        context.read<LoginFormCubit>().updateLoading();
         if (!state.success) {
           final snackBar = SnackBar(content: Text(state.errorMessage));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
-        context.read<LoginFormCubit>().updateLoading();
         if (state.success) {
-          context.go('/');
+          context.pushNamed('home');
         }
       },
       builder: (context, state) {
@@ -86,7 +83,6 @@ class LoginFormContainer extends StatelessWidget {
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: primaryColor,
-                            width: 1,
                           ),
                         ),
                         errorBorder: const OutlineInputBorder(
@@ -118,12 +114,14 @@ class LoginFormContainer extends StatelessWidget {
                     style: GoogleFonts.shareTechMono(color: Colors.white),
                   ),
                   GestureDetector(
-                    onTap: () => {context.go('/register')},
+                    onTap: () => {
+                      GoRouter.of(context).push('/register'),
+                    },
                     child: Text(
                       'register',
                       style: GoogleFonts.shareTechMono(color: primaryColor),
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
@@ -139,59 +137,31 @@ class LoginFormContainer extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                       ),
-                      label: StreamBuilder<bool>(
-                        stream: context.read<LoginFormCubit>().loadingStream,
-                        builder: (context, snapshot) {
-                          var loading = false;
-                          if (snapshot.hasData && snapshot.data != null) {
-                            loading = snapshot.data!;
-                          }
-                          if (!loading) {
-                            return Text(
-                              'Login',
-                              style: GoogleFonts.shareTechMono(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            );
-                          }
-                          return Container(
-                            width: 24,
-                            height: 24,
-                            padding: const EdgeInsets.all(2),
-                            child: const CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 3,
-                            ),
-                          );
-                        },
+                      label: Visibility(
+                        visible: !context.read<LoginBloc>().state.loading,
+                        child: Text(
+                          'Register',
+                          style: GoogleFonts.shareTechMono(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
-                      icon: StreamBuilder<bool>(
-                        stream: context.read<LoginFormCubit>().loadingStream,
-                        builder: (context, snapshot) {
-                          var isLoading = false;
-                          if (snapshot.hasData && snapshot.data != null) {
-                            isLoading = snapshot.data!;
-                          }
-                          if (isLoading) {
-                            Container(
-                              width: 24,
-                              height: 24,
-                              padding: const EdgeInsets.all(2),
-                              child: const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 3,
-                              ),
-                            );
-                          }
-                          return Container();
-                        },
+                      icon: Visibility(
+                        visible: context.read<LoginBloc>().state.loading,
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          padding: const EdgeInsets.all(2),
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3,
+                          ),
+                        ),
                       ),
-                      onPressed: snapshot.hasData && snapshot.data != null
-                          ? () {
-                              login(context);
-                            }
-                          : null,
+                      onPressed: () {
+                        login(context, snapshot);
+                      },
                     ),
                   );
                 },
@@ -203,12 +173,22 @@ class LoginFormContainer extends StatelessWidget {
     );
   }
 
-  void login(BuildContext context) {
-    final email = context.read<LoginFormCubit>().emailValue;
-    final password = context.read<LoginFormCubit>().passwordValue;
+  void login(BuildContext context, AsyncSnapshot<bool> snapshot) {
+    if (!snapshot.hasData) {
+      const snackBar =
+          SnackBar(content: Text('Please profile Email and Password'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    if (snapshot?.data != null && snapshot?.data == false) {
+      const snackBar = SnackBar(content: Text('Form not valid'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    final form = context.read<LoginFormCubit>();
     context.read<LoginBloc>().add(
-          SignInRequest(email: email, password: password),
+          SignInRequest(
+            email: form.emailValue,
+            password: form.passwordValue,
+          ),
         );
-    context.read<LoginFormCubit>().updateLoading();
   }
 }
