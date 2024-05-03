@@ -19,14 +19,15 @@ dependencies:
   shared_preferences: ^2.2.2
   google_fonts: ^6.2.1
   animated_text_kit: ^4.2.2
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
   rxdart: ^0.27.7
   firebase_core: ^2.27.1
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.0
+  firebase_auth: ^4.17.9
   password_repository:
     path: packages/password_repository
+  auth_repository:
+    path: packages/auth_repository
   
 dev_dependencies:
   bloc_test: ^9.1.4
@@ -38,6 +39,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/icon/icon.png
 
 
 flutter_launcher_icons:

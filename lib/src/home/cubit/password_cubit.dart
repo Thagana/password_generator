@@ -30,7 +30,6 @@ class PasswordCubit extends Cubit<PasswordCubitState> {
   final _isNumericController = BehaviorSubject<bool>.seeded(true);
   final _isSymbolController = BehaviorSubject<bool>.seeded(false);
 
-
   String get passwordValue => _passwordController.value;
 
   Stream<String> get passwordStream {
@@ -61,7 +60,6 @@ class PasswordCubit extends Cubit<PasswordCubitState> {
     return _isNumericController.stream;
   }
 
-
   void updatePasswordLength(double value) {
     _passwordLengthController.sink.add(value);
   }
@@ -77,7 +75,8 @@ class PasswordCubit extends Cubit<PasswordCubitState> {
     final hasUppercase = password.contains(RegExp(r'[A-Z]'));
     final hasLowercase = password.contains(RegExp(r'[a-z]'));
     final hasDigit = password.contains(RegExp(r'[0-9]'));
-    final hasSpecialChar = password.contains(RegExp(r'[!@#\$%^&*()\-_=+{};:,<.>/?\[\]\\]'));
+    final hasSpecialChar =
+        password.contains(RegExp(r'[!@#\$%^&*()\-_=+{};:,<.>/?\[\]\\]'));
 
     if (hasUppercase && hasLowercase && hasDigit && hasSpecialChar) {
       strength = PasswordStrength.STRONG;
@@ -88,8 +87,6 @@ class PasswordCubit extends Cubit<PasswordCubitState> {
     }
     _passwordStrength.sink.add(strength);
   }
-
-
 
   void updateIsUpperCaseOption(bool? value) {
     if (value != null) {

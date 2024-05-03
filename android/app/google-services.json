@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "808336413203",
-    "project_id": "password-generator-cb253",
-    "storage_bucket": "password-generator-cb253.appspot.com"
+    "project_number": "636775170550",
+    "project_id": "cyberman-9722e",
+    "storage_bucket": "cyberman-9722e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:808336413203:android:b8519377689b916255e5e6",
+        "mobilesdk_app_id": "1:636775170550:android:d70c2daeac48178a4907d7",
         "android_client_info": {
           "package_name": "com.thagana.cyberman"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBbzfkSPgyXgVALR7V106vxyfqM01FHeh0"
+          "current_key": "AIzaSyCIhx6yOQw9iukERAdSMQAn319lKITEk-s"
         }
       ],
       "services": {
