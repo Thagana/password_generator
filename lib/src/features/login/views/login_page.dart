@@ -1,7 +1,7 @@
 import 'package:cyberman/constants.dart';
-import 'package:cyberman/src/login/cubit/login_form_cubit.dart';
-import 'package:cyberman/src/login/cubit/login_page_cubit.dart';
-import 'package:cyberman/src/login/widgets/login_form_container.dart';
+import 'package:cyberman/src/features/login/cubit/login_form_cubit.dart';
+import 'package:cyberman/src/features/login/cubit/login_page_cubit.dart';
+import 'package:cyberman/src/features/login/widgets/login_form_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +12,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
@@ -20,8 +21,8 @@ class LoginPage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: ColoredBox(
-          color: Colors.black,
+        child: SizedBox(
+          width: 450,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

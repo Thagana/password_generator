@@ -1,26 +1,26 @@
 import 'package:cyberman/constants.dart';
-import 'package:cyberman/src/login/cubit/login_form_cubit.dart';
-import 'package:cyberman/src/register/bloc/register_bloc.dart';
+import 'package:cyberman/src/features/login/bloc/login_bloc.dart';
+import 'package:cyberman/src/features/login/cubit/login_form_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class RegisterFormContainer extends StatelessWidget {
-  const RegisterFormContainer({super.key});
+class LoginFormContainer extends StatelessWidget {
+  const LoginFormContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
-    return BlocConsumer<RegisterBloc, RegisterState>(
+    return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (!state.success) {
           final snackBar = SnackBar(content: Text(state.errorMessage));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
         if (state.success) {
-          context.go('/login');
+          context.pushNamed('home');
         }
       },
       builder: (context, state) {
@@ -46,6 +46,7 @@ class RegisterFormContainer extends StatelessWidget {
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: primaryColor,
+                            width: 1,
                           ),
                         ),
                         errorText: snapshot.hasError
@@ -109,16 +110,18 @@ class RegisterFormContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'already have an account? ',
+                    "don't have an account? ",
                     style: GoogleFonts.shareTechMono(color: Colors.white),
                   ),
                   GestureDetector(
-                    onTap: () => {context.go('/login')},
+                    onTap: () => {
+                      GoRouter.of(context).push('/register'),
+                    },
                     child: Text(
-                      'login',
+                      'register',
                       style: GoogleFonts.shareTechMono(color: primaryColor),
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
@@ -135,9 +138,9 @@ class RegisterFormContainer extends StatelessWidget {
                         backgroundColor: primaryColor,
                       ),
                       label: Visibility(
-                        visible: !context.read<RegisterBloc>().state.loading,
+                        visible: !context.read<LoginBloc>().state.loading,
                         child: Text(
-                          'Register',
+                          'Login',
                           style: GoogleFonts.shareTechMono(
                             color: Colors.white,
                             fontSize: 18,
@@ -145,7 +148,7 @@ class RegisterFormContainer extends StatelessWidget {
                         ),
                       ),
                       icon: Visibility(
-                        visible: context.read<RegisterBloc>().state.loading,
+                        visible: context.read<LoginBloc>().state.loading,
                         child: Container(
                           width: 24,
                           height: 24,
@@ -157,12 +160,12 @@ class RegisterFormContainer extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        register(context, snapshot);
+                        login(context, snapshot);
                       },
                     ),
                   );
                 },
-              ),
+              )
             ],
           ),
         );
@@ -170,7 +173,7 @@ class RegisterFormContainer extends StatelessWidget {
     );
   }
 
-  void register(BuildContext context, AsyncSnapshot<bool> snapshot) {
+  void login(BuildContext context, AsyncSnapshot<bool> snapshot) {
     if (!snapshot.hasData) {
       const snackBar =
           SnackBar(content: Text('Please profile Email and Password'));
@@ -181,8 +184,11 @@ class RegisterFormContainer extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     final form = context.read<LoginFormCubit>();
-    context.read<RegisterBloc>().add(
-          SignUpRequest(email: form.emailValue, password: form.passwordValue),
+    context.read<LoginBloc>().add(
+          SignInRequest(
+            email: form.emailValue,
+            password: form.passwordValue,
+          ),
         );
   }
 }

@@ -11,7 +11,13 @@ class PasswordRepository {
   }
 
   ///
-  Future<void> savePassword(String password, String date) {
-    return _provider.savePassword(password, date);
+  Future<void> savePassword(
+    String password,
+    String date,
+    String name,
+    String logo,
+    int strength,
+  ) {
+    return _provider.savePassword(password, date, name, logo, strength);
   }
 }

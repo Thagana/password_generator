@@ -1,16 +1,16 @@
+import 'package:cyberman/src/add_password/add/index.dart';
+import 'package:cyberman/src/add_password/quick_add/index.dart';
+import 'package:cyberman/src/features/login/views/login_page.dart';
+import 'package:cyberman/src/features/register/views/register_page.dart';
 import 'package:cyberman/src/home/blocs/auth_bloc/auth_bloc.dart';
 import 'package:cyberman/src/home/home.dart';
-import 'package:cyberman/src/login/views/login_page.dart';
 import 'package:cyberman/src/profile/views/profile_page.dart';
-import 'package:cyberman/src/register/views/register_page.dart';
 import 'package:cyberman/src/root/navigation_root.dart';
-import 'package:cyberman/src/view_more/views/view_more_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-
 
 class AppRouter {
   final GoRouter _router = GoRouter(
@@ -43,6 +43,22 @@ class AppRouter {
         path: '/register',
         builder: (context, state) => const RegisterPage(),
       ),
+      GoRoute(
+          path: '/add',
+          name: 'add',
+          builder: (context, state) {
+            return const AddPage();
+          },
+          routes: [
+            GoRoute(
+                path: 'quick',
+                name: 'quick',
+                builder: (context, state) {
+                  return const QuickAddPage();
+                }
+            )
+          ]
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return ScaffoldWithNavbar(navigationShell);
@@ -54,15 +70,6 @@ class AppRouter {
                 path: '/',
                 name: 'home',
                 builder: (context, state) => const HomePage(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: <RouteBase>[
-              GoRoute(
-                path: '/passwords',
-                name: 'passwords',
-                builder: (context, state) => const ViewMorePage(),
               ),
             ],
           ),
@@ -83,7 +90,10 @@ class AppRouter {
         return null;
       }
 
-      final user = context.read<AuthBloc>().authRepository.getUser();
+      final user = context
+          .read<AuthBloc>()
+          .authRepository
+          .getUser();
 
       if (user?.uid == null) {
         return '/login';

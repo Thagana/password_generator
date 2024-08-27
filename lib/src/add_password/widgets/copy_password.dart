@@ -1,7 +1,5 @@
-import 'package:cyberman/src/home/blocs/auth_bloc/auth_bloc.dart';
-import 'package:cyberman/src/home/blocs/password_bloc/password_bloc.dart';
+import 'package:cyberman/src/add_password/blocs/password_bloc/password_bloc.dart';
 import 'package:cyberman/src/home/cubit/password_cubit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,19 +23,22 @@ class CopyPassword extends StatelessWidget {
             ),
           ),
           child: Text(
-            'Copy Password',
+            'Copy and Add Password',
             style: GoogleFonts.shareTechMono(
               fontSize: 15,
-              color: const Color(0xff000000),
+              color: Colors.black,
             ),
           ),
           onPressed: () async {
             final password = context.read<PasswordCubit>().passwordValue;
             await Clipboard.setData(ClipboardData(text: password));
             // bloc time
+            if (!context.mounted) return;
+            final strength = context.read<PasswordCubit>().passwordStrength;
             context.read<PasswordBloc>().add(
               RequestSavePassword(
                 password: password,
+                strength: strength
               ),
             );
           },

@@ -1,7 +1,7 @@
 import 'package:cyberman/constants.dart';
-import 'package:cyberman/src/login/cubit/login_form_cubit.dart';
-import 'package:cyberman/src/login/cubit/login_page_cubit.dart';
-import 'package:cyberman/src/register/widgets/register_form_container.dart';
+import 'package:cyberman/src/features/login/cubit/login_form_cubit.dart';
+import 'package:cyberman/src/features/login/cubit/login_page_cubit.dart';
+import 'package:cyberman/src/features/register/widgets/register_form_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +12,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.keyboard_backspace_outlined),
@@ -27,8 +28,8 @@ class RegisterPage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: ColoredBox(
-          color: Colors.black,
+        child: SizedBox(
+          width: 450,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -13,7 +13,7 @@ class PasswordApiProvider {
       if (user != null) {
         final database = FirebaseDatabase.instance.ref();
         final snapshot =
-        await database.child('users/${user.uid}/passwords').get();
+            await database.child('users/${user.uid}/passwords').get();
 
         if (snapshot.value != null) {
           final passwords = <Password>[];
@@ -21,6 +21,9 @@ class PasswordApiProvider {
             final password = Password(
               password: item['password'] as String,
               date: item['date'] as String,
+              name: item['name'] as String?,
+              logo: item['logo'] as String?,
+              strength: item['strength'] as int?
             );
             passwords.add(password);
           }
@@ -54,20 +57,26 @@ class PasswordApiProvider {
   }
 
   ///
-  Future<void> savePassword(String password,
-      String date,) async {
+  Future<void> savePassword(
+    String password,
+    String date,
+    String name,
+    String logo,
+    int strength,
+  ) async {
     try {
       final user = getCurrentUser();
       if (user != null) {
         final database = FirebaseDatabase.instance;
-        final snapshot = await database
-            .ref()
-            .child('users/${user.uid}/passwords')
-            .get();
+        final snapshot =
+            await database.ref().child('users/${user.uid}/passwords').get();
 
         final passwordSave = {
           'password': password,
           'date': date,
+          'name': name,
+          'logo': logo,
+          'strength': strength
         };
 
         if (snapshot.value != null) {
@@ -76,6 +85,9 @@ class PasswordApiProvider {
             final password = {
               'password': item['password'] as String,
               'date': item['date'] as String,
+              'name': item['name'] as String?,
+              'logo': item['logo'] as String?,
+              'strength': item['strength'] as int?,
             };
             passwords.add(password);
           }

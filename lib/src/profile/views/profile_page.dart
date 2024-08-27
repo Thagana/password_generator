@@ -1,4 +1,7 @@
+import 'package:cyberman/src/profile/views/profile_app.dart';
+import 'package:cyberman/src/profile/views/profile_web.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 
 class ProfilePage extends StatelessWidget {
@@ -6,6 +9,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return kIsWeb ? const ProfileWeb() : const ProfileApp();
   }
 }

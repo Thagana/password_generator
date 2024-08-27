@@ -13,10 +13,12 @@ enum PasswordStrength {
 }
 
 class PasswordCubit extends Cubit<PasswordCubitState> {
-  PasswordCubit() : super(PasswordInitial());
 
+  PasswordCubit() : super(PasswordInitial()) {
+    updatePassword();
+  }
   // BehaviorSubject
-  final _passwordController = BehaviorSubject<String>.seeded('CDnE6BXZtFGbAEt');
+  final _passwordController = BehaviorSubject<String>.seeded('');
 
   final _passwordStrength =
       BehaviorSubject<PasswordStrength>.seeded(PasswordStrength.WEEK);
@@ -31,6 +33,8 @@ class PasswordCubit extends Cubit<PasswordCubitState> {
   final _isSymbolController = BehaviorSubject<bool>.seeded(false);
 
   String get passwordValue => _passwordController.value;
+
+  PasswordStrength get passwordStrength => _passwordStrength.value;
 
   Stream<String> get passwordStream {
     return _passwordController.stream;

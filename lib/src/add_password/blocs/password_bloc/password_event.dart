@@ -13,7 +13,8 @@ class RequestPasswords extends PasswordEvent {
 }
 
 class RequestSavePassword extends PasswordEvent {
-  const RequestSavePassword({required this.password});
+  const RequestSavePassword({required this.password, required this.strength});
 
   final String password;
+  final PasswordStrength strength;
 }
