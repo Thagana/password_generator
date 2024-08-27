@@ -1,12 +1,12 @@
 import 'package:auth_repository/auth_repository.dart';
 import 'package:cyberman/router/router.dart';
+import 'package:cyberman/src/add_password/blocs/password_bloc/password_bloc.dart';
+import 'package:cyberman/src/features/login/bloc/login_bloc.dart';
+import 'package:cyberman/src/features/login/cubit/login_page_cubit.dart';
+import 'package:cyberman/src/features/register/bloc/register_bloc.dart';
 import 'package:cyberman/src/home/blocs/auth_bloc/auth_bloc.dart';
-import 'package:cyberman/src/home/blocs/password_bloc/password_bloc.dart';
 import 'package:cyberman/src/home/cubit/navigation_cubit.dart';
 import 'package:cyberman/src/home/cubit/password_cubit.dart';
-import 'package:cyberman/src/login/bloc/login_bloc.dart';
-import 'package:cyberman/src/login/cubit/login_page_cubit.dart';
-import 'package:cyberman/src/register/bloc/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:password_repository/password_repository.dart';

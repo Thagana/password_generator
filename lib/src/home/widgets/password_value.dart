@@ -1,6 +1,6 @@
 import 'package:cyberman/constants.dart';
+import 'package:cyberman/src/add_password/widgets/status_bars.dart';
 import 'package:cyberman/src/home/cubit/password_cubit.dart';
-import 'package:cyberman/src/home/widgets/status_bars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,5 +1,5 @@
-import 'package:cyberman/src/home/cubit/password_cubit.dart';
 import 'package:cyberman/src/home/widgets/status_bar.dart';
+import 'package:cyberman/src/home/cubit/password_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
